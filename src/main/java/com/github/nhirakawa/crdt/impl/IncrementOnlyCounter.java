@@ -1,4 +1,4 @@
-package com.github.nhirakawa.crdt.service.resources;
+package com.github.nhirakawa.crdt.impl;
 
 import java.util.function.BinaryOperator;
 
