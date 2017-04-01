@@ -16,3 +16,4 @@ clusterHosts:
  - "localhost:9090"
 
 nodeId: ""
+pollInterval: 5000

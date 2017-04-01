@@ -58,7 +58,14 @@ public class StatePoller<T extends ConvergentCrdt<T, V>, V> {
     if (scheduledFuture.isPresent()) {
       throw new IllegalArgumentException("poller already started");
     }
-    scheduledFuture = Optional.of(scheduledExecutorService.scheduleAtFixedRate(this::poll, 100, 1000, TimeUnit.MILLISECONDS));
+    scheduledFuture = Optional.of(
+        scheduledExecutorService.scheduleAtFixedRate(
+            this::poll,
+            0,
+            configuration.getPollInterval(),
+            TimeUnit.MILLISECONDS
+        )
+    );
   }
 
   public void poll() {

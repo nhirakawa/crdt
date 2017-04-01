@@ -10,6 +10,7 @@ public class CrdtConfiguration extends Configuration {
 
   private Set<String> clusterHosts;
   private String nodeId;
+  private int pollInterval;
 
   @JsonProperty
   public Set<String> getClusterHosts() {
@@ -29,5 +30,13 @@ public class CrdtConfiguration extends Configuration {
   @JsonProperty
   public void setNodeId(String nodeId) {
     this.nodeId = nodeId;
+  }
+
+  public int getPollInterval() {
+    return pollInterval;
+  }
+
+  public void setPollInterval(int pollInterval) {
+    this.pollInterval = pollInterval;
   }
 }
