@@ -38,7 +38,7 @@ public abstract class ConvergentCrdt<T extends ConvergentCrdt, V> {
   }
 
   public final void update(V value) {
-    values.putIfAbsent(nodeId, new AtomicReference<>(identity));
+    values.computeIfAbsent(nodeId, key -> new AtomicReference<>(identity));
     values.get(nodeId).getAndAccumulate(value, accumulator);
   }
 
@@ -49,8 +49,14 @@ public abstract class ConvergentCrdt<T extends ConvergentCrdt, V> {
     }
   }
 
-  public final Map<String, AtomicReference<V>> getValues() {
-    return values;
+  public final Map<String, V> getValues() {
+    Map<String, V> result = new HashMap<>();
+
+    for (Entry<String, AtomicReference<V>> entry : values.entrySet()) {
+      result.put(entry.getKey(), entry.getValue().get());
+    }
+
+    return result;
   }
 
   public abstract String getResourceName();

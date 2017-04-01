@@ -2,7 +2,6 @@ package com.github.nhirakawa.crdt.models;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.atomic.AtomicReference;
 
 import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
@@ -23,8 +22,8 @@ public abstract class CrdtModel<V> {
   public static <V> CrdtModel<V> from(ConvergentCrdt<?, V> crdt) {
     ImmutableCrdtModel.Builder<V> builder = ImmutableCrdtModel.builder();
 
-    for(Entry<String, AtomicReference<V>> entry : crdt.getValues().entrySet()) {
-      builder.putValues(entry.getKey(), entry.getValue().get());
+    for (Entry<String, V> entry : crdt.getValues().entrySet()) {
+      builder.putValues(entry.getKey(), entry.getValue());
     }
 
     builder.value(crdt.getValue());
