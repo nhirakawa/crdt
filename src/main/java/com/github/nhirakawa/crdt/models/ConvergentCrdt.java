@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BinaryOperator;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.google.common.base.MoreObjects;
 
 public abstract class ConvergentCrdt<T extends ConvergentCrdt, V> {
@@ -15,6 +16,7 @@ public abstract class ConvergentCrdt<T extends ConvergentCrdt, V> {
   private final BinaryOperator<V> accumulator;
   private final BinaryOperator<V> merge;
   private final String nodeId;
+  private final JavaType valueType;
 
   private final Map<String, AtomicReference<V>> values;
 
@@ -22,12 +24,14 @@ public abstract class ConvergentCrdt<T extends ConvergentCrdt, V> {
                         BinaryOperator<V> reducer,
                         BinaryOperator<V> accumulator,
                         BinaryOperator<V> merge,
-                        String nodeId) {
+                        String nodeId,
+                        JavaType valueType) {
     this.identity = identity;
     this.reducer = reducer;
     this.accumulator = accumulator;
     this.merge = merge;
     this.nodeId = nodeId;
+    this.valueType = valueType;
     this.values = new HashMap<>();
   }
 
@@ -59,9 +63,11 @@ public abstract class ConvergentCrdt<T extends ConvergentCrdt, V> {
     return result;
   }
 
-  public abstract String getResourceName();
+  public JavaType getValueType() {
+    return valueType;
+  }
 
-  public abstract Class<V> getValueClass();
+  public abstract String getNamespace();
 
   @Override
   public String toString() {

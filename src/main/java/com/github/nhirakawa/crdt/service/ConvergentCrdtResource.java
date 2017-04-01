@@ -3,12 +3,12 @@ package com.github.nhirakawa.crdt.service;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.github.nhirakawa.crdt.models.ConvergentCrdt;
 import com.github.nhirakawa.crdt.models.CrdtModel;
+import com.github.nhirakawa.crdt.models.ImmutableCrdtUpdateRequest;
 
 @Produces(MediaType.APPLICATION_JSON)
 public abstract class ConvergentCrdtResource<T extends ConvergentCrdt<T, V>, V> {
@@ -34,9 +34,9 @@ public abstract class ConvergentCrdtResource<T extends ConvergentCrdt<T, V>, V> 
   }
 
   @POST
-  @Path("/update/{value}")
-  public final void update(@PathParam("value") V value) {
-    crdt.update(value);
+  @Path("/update")
+  public final void update(ImmutableCrdtUpdateRequest<V> updateRequest) {
+    crdt.update(updateRequest.getValue());
   }
 
   @POST

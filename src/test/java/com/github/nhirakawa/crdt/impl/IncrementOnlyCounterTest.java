@@ -8,17 +8,20 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nhirakawa.crdt.service.CrdtConfiguration;
 
 public class IncrementOnlyCounterTest {
+
+  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
   private IncrementOnlyCounter counter1;
   private IncrementOnlyCounter counter2;
 
   @Before
   public void setup() {
-    counter1 = new IncrementOnlyCounter(buildCrdtConfiguration("node1"));
-    counter2 = new IncrementOnlyCounter(buildCrdtConfiguration("node2"));
+    counter1 = new IncrementOnlyCounter(buildCrdtConfiguration("node1"), OBJECT_MAPPER);
+    counter2 = new IncrementOnlyCounter(buildCrdtConfiguration("node2"), OBJECT_MAPPER);
   }
 
   @Test

@@ -2,6 +2,8 @@ package com.github.nhirakawa.crdt.impl;
 
 import java.util.function.BinaryOperator;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nhirakawa.crdt.models.ConvergentCrdt;
 import com.github.nhirakawa.crdt.service.CrdtConfiguration;
 import com.google.inject.Inject;
@@ -14,17 +16,20 @@ public class IncrementOnlyCounter extends ConvergentCrdt<IncrementOnlyCounter, I
   private static final BinaryOperator<Integer> SUM = (a, b) -> a + b;
 
   @Inject
-  public IncrementOnlyCounter(CrdtConfiguration configuration) {
-    super(IDENTITY, SUM, SUM, Math::max, configuration.getNodeId());
+  public IncrementOnlyCounter(CrdtConfiguration configuration,
+                              ObjectMapper objectMapper) {
+    super(
+        IDENTITY,
+        SUM,
+        SUM,
+        Math::max,
+        configuration.getNodeId(),
+        objectMapper.getTypeFactory().constructType(new TypeReference<Integer>(){})
+    );
   }
 
   @Override
-  public String getResourceName() {
+  public String getNamespace() {
     return "incrementor";
-  }
-
-  @Override
-  public Class<Integer> getValueClass() {
-    return Integer.class;
   }
 }

@@ -33,8 +33,8 @@ public class StatePoller<T extends ConvergentCrdt<T, V>, V> {
   private final CloseableHttpClient httpClient;
   private final ObjectMapper objectMapper;
   private final CrdtConfiguration configuration;
-  private final JavaType crdtModelType;
   private final ScheduledExecutorService scheduledExecutorService;
+  private final JavaType crdtModelType;
 
   private Optional<ScheduledFuture<?>> scheduledFuture;
 
@@ -48,7 +48,7 @@ public class StatePoller<T extends ConvergentCrdt<T, V>, V> {
     this.httpClient = httpClient;
     this.objectMapper = objectMapper;
     this.scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
-    this.crdtModelType = objectMapper.getTypeFactory().constructParametricType(ImmutableCrdtModel.class, crdt.getValueClass());
+    this.crdtModelType = objectMapper.getTypeFactory().constructParametricType(ImmutableCrdtModel.class, crdt.getValueType());
     this.scheduledFuture = Optional.empty();
 
     start();
@@ -88,7 +88,7 @@ public class StatePoller<T extends ConvergentCrdt<T, V>, V> {
   private Map<String, V> getOtherCrdt(String host) {
     try {
 
-      HttpGet get = buildGet(host, crdt.getResourceName());
+      HttpGet get = buildGet(host, crdt.getNamespace());
       CloseableHttpResponse response = httpClient.execute(get);
       return parseInputStream(response.getEntity().getContent()).getValues();
 
