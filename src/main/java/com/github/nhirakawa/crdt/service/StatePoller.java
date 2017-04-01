@@ -2,6 +2,7 @@ package com.github.nhirakawa.crdt.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
@@ -71,8 +72,10 @@ public class StatePoller<T extends ConvergentCrdt<T, V>, V> {
   public void poll() {
     LOG.debug("Polling servers...");
     for (String host : configuration.getClusterHosts()) {
-      Optional<Map<String, V>> otherCrdt = getOtherCrdt(host);
-      otherCrdt.ifPresent(crdt::merge);
+      Map<String, V> otherCrdt = getOtherCrdt(host);
+      if (!otherCrdt.isEmpty()) {
+        crdt.merge(otherCrdt);
+      }
     }
   }
 
@@ -82,18 +85,22 @@ public class StatePoller<T extends ConvergentCrdt<T, V>, V> {
     scheduledFuture = Optional.empty();
   }
 
-  private Optional<Map<String, V>> getOtherCrdt(String host) {
+  private Map<String, V> getOtherCrdt(String host) {
     try {
 
-      HttpGet get = new HttpGet(String.format("http://%s/crdt/%s/full", host, crdt.getResourceName()));
+      HttpGet get = buildGet(host, crdt.getResourceName());
       CloseableHttpResponse response = httpClient.execute(get);
-      return Optional.of(parseInputStream(response.getEntity().getContent()).getValues());
+      return parseInputStream(response.getEntity().getContent()).getValues();
 
     } catch (Exception e) {
       LOG.warn(e.getMessage());
     }
 
-    return Optional.empty();
+    return Collections.emptyMap();
+  }
+
+  private static HttpGet buildGet(String host, String namespace) {
+    return new HttpGet(String.format("http://%s/crdt/%s/full", host, namespace));
   }
 
   private CrdtModel<V> parseInputStream(InputStream inputStream) throws IOException {
