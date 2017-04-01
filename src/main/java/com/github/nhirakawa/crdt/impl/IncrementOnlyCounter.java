@@ -22,4 +22,9 @@ public class IncrementOnlyCounter extends ConvergentCrdt<IncrementOnlyCounter, I
   public String getResourceName() {
     return "incrementor";
   }
+
+  @Override
+  public Class<Integer> getValueClass() {
+    return Integer.class;
+  }
 }

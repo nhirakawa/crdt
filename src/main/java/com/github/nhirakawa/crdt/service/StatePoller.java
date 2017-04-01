@@ -2,8 +2,6 @@ package com.github.nhirakawa.crdt.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ScheduledExecutorService;
@@ -17,11 +15,11 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nhirakawa.crdt.models.ConvergentCrdt;
 import com.github.nhirakawa.crdt.models.CrdtModel;
 import com.github.nhirakawa.crdt.models.ImmutableCrdtModel;
-import com.google.common.io.CharStreams;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -34,6 +32,7 @@ public class StatePoller<T extends ConvergentCrdt<T, V>, V> {
   private final CloseableHttpClient httpClient;
   private final ObjectMapper objectMapper;
   private final CrdtConfiguration configuration;
+  private final JavaType crdtModelType;
   private final ScheduledExecutorService scheduledExecutorService;
 
   private Optional<ScheduledFuture<?>> scheduledFuture;
@@ -48,6 +47,7 @@ public class StatePoller<T extends ConvergentCrdt<T, V>, V> {
     this.httpClient = httpClient;
     this.objectMapper = objectMapper;
     this.scheduledExecutorService = new ScheduledThreadPoolExecutor(1);
+    this.crdtModelType = objectMapper.getTypeFactory().constructParametricType(ImmutableCrdtModel.class, crdt.getValueClass());
     this.scheduledFuture = Optional.empty();
 
     start();
@@ -97,7 +97,6 @@ public class StatePoller<T extends ConvergentCrdt<T, V>, V> {
   }
 
   private CrdtModel<V> parseInputStream(InputStream inputStream) throws IOException {
-    String response = CharStreams.toString(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-    return (CrdtModel<V>) objectMapper.readValue(response, ImmutableCrdtModel.class);
+    return objectMapper.readValue(inputStream, crdtModelType);
   }
 }

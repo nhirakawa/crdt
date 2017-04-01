@@ -61,6 +61,8 @@ public abstract class ConvergentCrdt<T extends ConvergentCrdt, V> {
 
   public abstract String getResourceName();
 
+  public abstract Class<V> getValueClass();
+
   @Override
   public String toString() {
     return MoreObjects.toStringHelper(this)
