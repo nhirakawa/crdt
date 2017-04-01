@@ -7,7 +7,7 @@ import com.github.nhirakawa.crdt.service.ConvergentCrdtResource;
 import com.github.nhirakawa.crdt.service.StatePoller;
 import com.google.inject.Inject;
 
-@Path("/crdt/incrementor")
+@Path("/crdt/incrementOnlyCounter")
 public class IncrementOnlyResource extends ConvergentCrdtResource<IncrementOnlyCounter, Integer> {
 
   @Inject

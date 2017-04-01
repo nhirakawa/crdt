@@ -30,6 +30,6 @@ public class IncrementOnlyCounter extends ConvergentCrdt<IncrementOnlyCounter, I
 
   @Override
   public String getNamespace() {
-    return "incrementor";
+    return "incrementOnlyCounter";
   }
 }
