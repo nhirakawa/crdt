@@ -15,17 +15,26 @@ public class AddOnlySet extends ConvergentCrdt<AddOnlySet, Set<Integer>> {
 
   @Inject
   public AddOnlySet(CrdtConfiguration configuration, ObjectMapper objectMapper) {
-    super(
-        new HashSet<>(),
-        Sets::union,
-        Sets::union,
-        Sets::union,
-        configuration.getNodeId(),
-        objectMapper.getTypeFactory().constructCollectionType(Set.class, Integer.class));
+    super(new HashSet<>(), configuration.getNodeId(), objectMapper.getTypeFactory().constructCollectionType(Set.class, Integer.class));
   }
 
   @Override
   public String getNamespace() {
     return "addOnlySet";
+  }
+
+  @Override
+  protected Set<Integer> update(Set<Integer> existingValue, Set<Integer> newValue) {
+    return Sets.union(existingValue, newValue);
+  }
+
+  @Override
+  protected Set<Integer> merge(Set<Integer> existingValue, Set<Integer> otherValue) {
+    return Sets.union(existingValue, otherValue);
+  }
+
+  @Override
+  protected Set<Integer> reduce(Set<Integer> v1, Set<Integer> v2) {
+    return Sets.union(v1, v2);
   }
 }
