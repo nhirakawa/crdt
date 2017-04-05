@@ -2,4 +2,5 @@
 Java CRDT implementations
 
 ## Current implementations
-- increment only counter
+- increment-only counter
+- add-only set
