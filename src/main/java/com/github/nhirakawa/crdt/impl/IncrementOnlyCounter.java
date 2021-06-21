@@ -8,12 +8,20 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 @Singleton
-public class IncrementOnlyCounter extends ConvergentCrdt<IncrementOnlyCounter, Integer> {
+public class IncrementOnlyCounter
+  extends ConvergentCrdt<IncrementOnlyCounter, Integer> {
 
   @Inject
-  public IncrementOnlyCounter(CrdtConfiguration configuration,
-                              ObjectMapper objectMapper) {
-    super(0, configuration.getNodeId(), objectMapper.getTypeFactory().constructType(new TypeReference<Integer>() {})
+  public IncrementOnlyCounter(
+    CrdtConfiguration configuration,
+    ObjectMapper objectMapper
+  ) {
+    super(
+      0,
+      configuration.getNodeId(),
+      objectMapper
+        .getTypeFactory()
+        .constructType(new TypeReference<Integer>() {})
     );
   }
 

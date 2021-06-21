@@ -2,17 +2,14 @@ package com.github.nhirakawa.crdt.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.nhirakawa.crdt.service.CrdtConfiguration;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.nhirakawa.crdt.service.CrdtConfiguration;
-
 public class IncrementOnlyCounterTest {
-
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
   private IncrementOnlyCounter counter1;
@@ -20,8 +17,10 @@ public class IncrementOnlyCounterTest {
 
   @Before
   public void setup() {
-    counter1 = new IncrementOnlyCounter(buildCrdtConfiguration("node1"), OBJECT_MAPPER);
-    counter2 = new IncrementOnlyCounter(buildCrdtConfiguration("node2"), OBJECT_MAPPER);
+    counter1 =
+      new IncrementOnlyCounter(buildCrdtConfiguration("node1"), OBJECT_MAPPER);
+    counter2 =
+      new IncrementOnlyCounter(buildCrdtConfiguration("node2"), OBJECT_MAPPER);
   }
 
   @Test

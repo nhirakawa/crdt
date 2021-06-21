@@ -1,13 +1,10 @@
 package com.github.nhirakawa.crdt.service;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.dropwizard.Configuration;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.dropwizard.Configuration;
-
 public class CrdtConfiguration extends Configuration {
-
   private Set<String> clusterHosts;
   private String nodeId;
   private int pollInterval;

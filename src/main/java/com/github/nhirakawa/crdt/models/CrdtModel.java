@@ -1,13 +1,11 @@
 package com.github.nhirakawa.crdt.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.immutables.value.Value.Auxiliary;
 import org.immutables.value.Value.Immutable;
 import org.immutables.value.Value.Style;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Immutable
 @Style(jdkOnly = true)
@@ -30,5 +28,4 @@ public abstract class CrdtModel<V> {
 
     return builder.build();
   }
-
 }

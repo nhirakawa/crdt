@@ -1,24 +1,20 @@
 package com.github.nhirakawa.crdt.models;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import com.fasterxml.jackson.databind.JavaType;
 import com.google.common.base.MoreObjects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public abstract class ConvergentCrdt<T extends ConvergentCrdt, V> {
-
   private final V identity;
   private final String nodeId;
   private final JavaType valueType;
 
   private final ConcurrentMap<String, V> values;
 
-  public ConvergentCrdt(V identity,
-                        String nodeId,
-                        JavaType valueType) {
+  public ConvergentCrdt(V identity, String nodeId, JavaType valueType) {
     this.identity = identity;
     this.nodeId = nodeId;
     this.valueType = valueType;
@@ -26,8 +22,7 @@ public abstract class ConvergentCrdt<T extends ConvergentCrdt, V> {
   }
 
   public final V getValue() {
-    return values.values().stream()
-        .reduce(identity, this::reduce);
+    return values.values().stream().reduce(identity, this::reduce);
   }
 
   public final void update(V value) {
@@ -58,8 +53,6 @@ public abstract class ConvergentCrdt<T extends ConvergentCrdt, V> {
 
   @Override
   public String toString() {
-    return MoreObjects.toStringHelper(this)
-        .add("values", values)
-        .toString();
+    return MoreObjects.toStringHelper(this).add("values", values).toString();
   }
 }

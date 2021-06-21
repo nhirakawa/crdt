@@ -1,8 +1,7 @@
 package com.github.nhirakawa.crdt.models;
 
-import org.immutables.value.Value.Immutable;
-
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import org.immutables.value.Value.Immutable;
 
 @Immutable
 @JsonDeserialize
